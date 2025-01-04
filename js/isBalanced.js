@@ -10,28 +10,16 @@
  * @param {TreeNode} root
  * @return {boolean}
  */
-var isBalanced = function(root) {
-    let res = true
-
-    const dfs = (node, depth) => {
-        if(!node) {
-            return depth - 1
-        }
-
-        if(!node.right && !node.left) {
-            return depth
-        }
-
-        const leftDepth = dfs(node.left, depth + 1)
-        const rightDepth = dfs(node.right, depth + 1)
-        if(Math.abs(rightDepth - leftDepth) > 1) {
-            res = false
-        }
-
-        return Math.max(leftDepth, rightDepth)
+var isBalanced = function (root) {
+    const dfs = (node) => {
+        if (!node) return 0;
+        let right = dfs(node.right);
+        if(right == -1) return -1;
+        let left = dfs(node.left);
+        if(left == -1) return -1;
+        if (Math.abs(left - right) > 1) return -1;
+        return 1 + Math.max(left, right);
     }
-
-    dfs(root, 1)
-
-    return res
+    let res = dfs(root);
+    return res != -1;
 };
